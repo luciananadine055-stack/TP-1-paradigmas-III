@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo - Telas y Bordados</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #333;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 12px 24px;
+            background: white;
+            border: 2px solid #667eea;
+            color: #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .productos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .producto-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .producto-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .producto-imagen {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(45deg, #f093fb, #f5576c);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .producto-imagen::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4em;
+            opacity: 0.3;
+        }
+
+        .cartera .producto-imagen::before { content: '👜'; }
+        .bolso .producto-imagen::before { content: '🎒'; }
+        .bordado .producto-imagen::before { content: '🧵'; }
+
+        .producto-info {
+            padding: 25px;
+            position: relative;
+        }
+
+        .producto-categoria {
+            position: absolute;
+            top: -15px;
+            left: 25px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .producto-titulo {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: #333;
+            margin: 15px 0 10px 0;
+        }
+
+        .producto-descripcion {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+
+        .producto-precio {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .producto-acciones {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-carrito {
+            flex: 1;
+            padding: 12px 20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-carrito::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-carrito:hover::before {
+            left: 100%;
+        }
+
+        .btn-carrito:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-favorito {
+            padding: 12px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        .btn-favorito:hover {
+            border-color: #f5576c;
+            color: #f5576c;
+            transform: scale(1.1);
+        }
+
+        .stock-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+        }
+
+        .stock-low { background: #f5576c !important; }
+        .stock-medium { background: #ffa726 !important; }
+        .stock-high { background: #66bb6a !important; }
+
+        .no-productos {
+            text-align: center;
+            color: #666;
+            font-size: 1.2em;
+            margin: 50px 0;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .productos-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .filters {
+                gap: 10px;
+            }
+            
+            .filter-btn {
+                padding: 10px 20px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Telas y Bordados</h1>
+            <p>Productos artesanales únicos y exclusivos</p>
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" data-filter="todos">Todos</button>
+            <button class="filter-btn" data-filter="carteras">Carteras</button>
+            <button class="filter-btn" data-filter="bolsos">Bolsos</button>
+            <button class="filter-btn" data-filter="bordados">Bordados</button>
+        </div>
+
+        <div class="productos-grid" id="productosGrid">
+            <!-- Los productos se generarán aquí con JavaScript -->
+        </div>
+
+        <div class="no-productos" id="noProductos">
+            No se encontraron productos para esta categoría.
+        </div>
+    </div>
+
+    <script>
+        // Datos de productos de ejemplo
+        const productos = [
+            {
+                id: 1,
+                nombre: "Cartera Artesanal Rosa",
+                categoria: "carteras",
+                precio: 2500,
+                descripcion: "Hermosa cartera artesanal confeccionada a mano con materiales de primera calidad. Perfecta para uso diario.",
+                stock: 5
+            },
+            {
+                id: 2,
+                nombre: "Bolso Vintage Azul",
+                categoria: "bolsos", 
+                precio: 3200,
+                descripcion: "Bolso vintage con detalles únicos y espacioso interior. Ideal para llevar todas tus pertenencias con estilo.",
+                stock: 12
+            },
+            {
+                id: 3,
+                nombre: "Bordado Floral Exclusivo",
+                categoria: "bordados",
+                precio: 1800,
+                descripcion: "Bordado floral hecho completamente a mano con hilos de seda. Una pieza única de arte textil.",
+                stock: 3
+            },
+            {
+                id: 4,
+                nombre: "Cartera Nocturna Negra",
+                categoria: "carteras",
+                precio: 2800,
+                descripcion: "Elegante cartera para ocasiones especiales. Diseño sofisticado con acabados de lujo.",
+                stock: 8
+            },
+            {
+                id: 5,
+                nombre: "Bolso Casual Marrón",
+                categoria: "bolsos",
+                precio: 2900,
+                descripcion: "Bolso casual perfecto para el día a día. Confeccionado en cuero genuino con costuras reforzadas.",
+                stock: 15
+            },
+            {
+                id: 6,
+                nombre: "Bordado Geométrico",
+                categoria: "bordados",
+                precio: 2200,
+                descripcion: "Diseño geométrico moderno bordado con técnicas tradicionales. Perfecto para decorar cualquier espacio.",
+                stock: 6
+            },
+            {
+                id: 7,
+                nombre: "Cartera Mini Coral",
+                categoria: "carteras",
+                precio: 1950,
+                descripcion: "Cartera mini en tono coral vibrante. Compacta pero funcional, ideal para salidas nocturnas.",
+                stock: 2
+            },
+            {
+                id: 8,
+                nombre: "Bolso Tote Verde",
+                categoria: "bolsos",
+                precio: 3500,
+                descripcion: "Amplio bolso tote en tono verde oliva. Perfecto para trabajo o compras, con múltiples compartimentos.",
+                stock: 9
+            },
+            {
+                id: 9,
+                nombre: "Bordado Paisaje Andino",
+                categoria: "bordados",
+                precio: 2600,
+                descripcion: "Hermoso bordado que representa paisajes andinos. Trabajo artesanal de alta calidad cultural.",
+                stock: 4
+            }
+        ];
+
+        // Función para obtener el nivel de stock
+        function getStockLevel(stock) {
+            if (stock <= 3) return 'low';
+            if (stock <= 8) return 'medium';
+            return 'high';
+        }
+
+        // Función para obtener el texto del stock
+        function getStockText(stock) {
+            if (stock <= 3) return `Solo ${stock} disponibles`;
+            if (stock <= 8) return `${stock} disponibles`;
+            return `${stock} disponibles`;
+        }
+
+        // Función para renderizar productos
+        function renderProductos(productosAMostrar) {
+            const grid = document.getElementById('productosGrid');
+            const noProductos = document.getElementById('noProductos');
+
+            if (productosAMostrar.length === 0) {
+                grid.style.display = 'none';
+                noProductos.style.display = 'block';
+                return;
+            }
+
+            grid.style.display = 'grid';
+            noProductos.style.display = 'none';
+
+            grid.innerHTML = productosAMostrar.map(producto => `
+                <div class="producto-card ${producto.categoria.slice(0, -1)}">
+                    <div class="producto-imagen">
+                        <div class="stock-badge stock-${getStockLevel(producto.stock)}">
+                            ${getStockText(producto.stock)}
+                        </div>
+                    </div>
+                    <div class="producto-info">
+                        <div class="producto-categoria">${producto.categoria}</div>
+                        <h3 class="producto-titulo">${producto.nombre}</h3>
+                        <p class="producto-descripcion">${producto.descripcion}</p>
+                        <div class="producto-precio">$${producto.precio.toLocaleString()}</div>
+                        <div class="producto-acciones">
+                            <button class="btn-carrito" onclick="agregarAlCarrito(${producto.id})">
+                                Agregar al Carrito
+                            </button>
+                            <button class="btn-favorito" onclick="toggleFavorito(${producto.id})">
+                                ♡
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Función para filtrar productos
+        function filtrarProductos(categoria) {
+            if (categoria === 'todos') {
+                return productos;
+            }
+            return productos.filter(producto => producto.categoria === categoria);
+        }
+
+        // Event listeners para filtros
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remover clase active de todos los botones
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                // Agregar clase active al botón clickeado
+                this.classList.add('active');
+                
+                // Filtrar y renderizar productos
+                const categoria = this.dataset.filter;
+                const productosFiltrados = filtrarProductos(categoria);
+                renderProductos(productosFiltrados);
+            });
+        });
+
+        // Funciones para interactividad
+        function agregarAlCarrito(productId) {
+            const producto = productos.find(p => p.id === productId);
+            alert(`${producto.nombre} agregado al carrito!`);
+            // Aquí implementarías la lógica real del carrito
+        }
+
+        function toggleFavorito(productId) {
+            const btn = event.target;
+            if (btn.textContent === '♡') {
+                btn.textContent = '♥';
+                btn.style.color = '#f5576c';
+            } else {
+                btn.textContent = '♡';
+                btn.style.color = '#666';
+            }
+        }
+
+        // Renderizar todos los productos al cargar la página
+        renderProductos(productos);
+    </script>
+</body>
+</html>
