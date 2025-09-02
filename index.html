@@ -1,0 +1,404 @@
+# TP-1-paradigmas-III
+alumna: Luciana Nadine Rojas
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telas y Bordados - Portada</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #faf7f5;
+            color: #4a3c31;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Encabezado */
+        header {
+            background: linear-gradient(135deg, #e8d6cb 0%, #c9a992 100%);
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #6b4c3a;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+        }
+        
+        .logo span {
+            color: #a67c52;
+        }
+        
+        .slogan {
+            font-style: italic;
+            color: #7d5d48;
+            margin-bottom: 15px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: 
+                radial-gradient(circle at 20% 35%, rgba(234, 217, 204, 0.5) 0%, transparent 20%),
+                radial-gradient(circle at 80% 65%, rgba(234, 217, 204, 0.5) 0%, transparent 20%),
+                linear-gradient(to bottom, #faf7f5, #f0e6dc);
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            color: #6b4c3a;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #7d5d48;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: #a67c52;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #8c6846;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Categorías */
+        .categories {
+            padding: 60px 20px;
+            text-align: center;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            color: #6b4c3a;
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: #a67c52;
+        }
+        
+        .category-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .category-item {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            width: 250px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .category-item:hover {
+            transform: translateY(-10px);
+        }
+        
+        .category-img {
+            height: 180px;
+            background-color: #e8d6cb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #a67c52;
+        }
+        
+        .category-img svg {
+            width: 80px;
+            height: 80px;
+        }
+        
+        .category-info {
+            padding: 20px;
+        }
+        
+        .category-info h3 {
+            color: #6b4c3a;
+            margin-bottom: 10px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #6b4c3a;
+            color: #e8d6cb;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 40px;
+        }
+        
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .social-icons {
+            margin: 20px 0;
+        }
+        
+        .social-icons a {
+            color: #e8d6cb;
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .social-icons a:hover {
+            color: #ffffff;
+            transform: translateY(-3px);
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Elementos decorativos */
+        .floating-icon {
+            position: absolute;
+            opacity: 0.1;
+            z-index: 1;
+            color: #7d5d48;
+        }
+        
+        .floating-icon.needle {
+            top: 20%;
+            left: 10%;
+            font-size: 5rem;
+            transform: rotate(45deg);
+        }
+        
+        .floating-icon.thread {
+            bottom: 20%;
+            right: 10%;
+            font-size: 4rem;
+        }
+        
+        /* Patrón de costura decorativo */
+        .stitch-pattern {
+            position: absolute;
+            width: 100%;
+            height: 15px;
+            background-image: 
+                linear-gradient(45deg, #c9a992 25%, transparent 25%), 
+                linear-gradient(-45deg, #c9a992 25%, transparent 25%), 
+                linear-gradient(45deg, transparent 75%, #c9a992 75%), 
+                linear-gradient(-45deg, transparent 75%, #c9a992 75%);
+            background-size: 20px 20px;
+            bottom: 0;
+            left: 0;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .category-item {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .floating-icon {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero {
+                padding: 50px 15px;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+            }
+            
+            .section-title {
+                font-size: 1.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">Telas <span>&</span> Bordados</div>
+        <p class="slogan">Artesanía hecha con amor y tradición</p>
+        <i class="floating-icon needle fas fa-needle"></i>
+        <i class="floating-icon thread fas fa-scroll"></i>
+        <div class="stitch-pattern"></div>
+    </header>
+    
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Descubre la belleza de lo artesanal</h1>
+            <p>Explora nuestra exclusiva colección de carteras, bolsos y bordados únicos, creados con dedicación y los mejores materiales.</p>
+            <a href="#" class="btn">Ver Catálogo</a>
+        </div>
+    </section>
+    
+    <section class="categories">
+        <h2 class="section-title">Nuestras Categorías</h2>
+        <div class="category-grid">
+            <div class="category-item">
+                <div class="category-img">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#a67c52">
+                        <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 5.5V7H9V5.5L3 7V9L5 9.5V15.5L3 16V18L5 18.5L5 22H7L7.5 20H16.5L17 22H19V18.5L21 18V16L19 15.5V9.5L21 9ZM7 16.5V9.5L10 8.5V12H14V8.5L17 9.5V16.5L14 15.5V18H10V15.5L7 16.5Z"/>
+                    </svg>
+                </div>
+                <div class="category-info">
+                    <h3>Carteras</h3>
+                    <p>Diseños únicos y elegantes para cada ocasión.</p>
+                </div>
+            </div>
+            
+            <div class="category-item">
+                <div class="category-img">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#a67c52">
+                        <path d="M20 6H16V4C16 2.9 15.1 2 14 2H10C8.9 2 8 2.9 8 4V6H4C2.9 6 2 6.9 2 8V19C2 20.1 2.9 21 4 21H20C21.1 21 22 20.1 22 19V8C22 6.9 21.1 6 20 6ZM10 4H14V6H10V4ZM20 19H4V8H20V19Z"/>
+                    </svg>
+                </div>
+                <div class="category-info">
+                    <h3>Bolsos</h3>
+                    <p>Complementos perfectos para tu estilo personal.</p>
+                </div>
+            </div>
+            
+            <div class="category-item">
+                <div class="category-img">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#a67c52">
+                        <path d="M20.41 4.94L19.06 3.59L15.83 6.82L14.41 5.41L13 6.83L15.83 9.66L20.41 5.08L20.41 4.94ZM4 9.66L8.59 5.08L8.59 4.94L7.24 3.59L4 6.83L5.41 8.24L4 9.66ZM14 12.5C14 11.67 13.33 11 12.5 11C11.67 11 11 11.67 11 12.5C11 13.33 11.67 14 12.5 14C13.33 14 14 13.33 14 12.5ZM14.5 19C14.5 19.83 13.83 20.5 13 20.5C12.17 20.5 11.5 19.83 11.5 19C11.5 18.17 12.17 17.5 13 17.5C13.83 17.5 14.5 18.17 14.5 19ZM9.5 19C9.5 19.83 8.83 20.5 8 20.5C7.17 20.5 6.5 19.83 6.5 19C6.5 18.17 7.17 17.5 8 17.5C8.83 17.5 9.5 18.17 9.5 19ZM16.5 19C16.5 19.83 15.83 20.5 15 20.5C14.17 20.5 13.5 19.83 13.5 19C13.5 18.17 14.17 17.5 15 17.5C15.83 17.5 16.5 18.17 16.5 19ZM20.5 14.5C20.5 15.33 19.83 16 19 16C18.17 16 17.5 15.33 17.5 14.5C17.5 13.67 18.17 13 19 13C19.83 13 20.5 13.67 20.5 14.5ZM3.5 14.5C3.5 15.33 2.83 16 2 16C1.17 16 0.5 15.33 0.5 14.5C0.5 13.67 1.17 13 2 13C2.83 13 3.5 13.67 3.5 14.5ZM20.5 9.5C20.5 10.33 19.83 11 19 11C18.17 11 17.5 10.33 17.5 9.5C17.5 8.67 18.17 8 19 8C19.83 8 20.5 8.67 20.5 9.5ZM3.5 9.5C3.5 10.33 2.83 11 2 11C1.17 11 0.5 10.33 0.5 9.5C0.5 8.67 1.17 8 2 8C2.83 8 3.5 8.67 3.5 9.5Z"/>
+                    </svg>
+                </div>
+                <div class="category-info">
+                    <h3>Bordados</h3>
+                    <p>Arte tradicional con un toque contemporáneo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="footer-content">
+            <h3>Telas y Bordados</h3>
+            <p>Tu tienda online de productos artesanales con calidad y tradición.</p>
+            
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+            </div>
+            
+            <p>&copy; 2025 Telas y Bordados. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Pequeño script para mejorar la interacción
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryItems = document.querySelectorAll('.category-item');
+            
+            categoryItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    this.style.transition = 'transform 0.5s ease, box-shadow 0.5s ease';
+                });
+            });
+            
+            // Efecto de aparición suave para los elementos
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Aplicar a las categorías
+            const categoryElements = document.querySelectorAll('.category-item');
+            categoryElements.forEach(el => {
+                el.style.opacity = 0;
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
