@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Completar Compra - Telas y Bordados</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .breadcrumb {
+            margin-bottom: 30px;
+            color: #666;
+            text-align: center;
+        }
+
+        .breadcrumb a {
+            color: #667eea;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: #764ba2;
+        }
+
+        .proceso-pasos {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            padding: 0 20px;
+        }
+
+        .paso {
+            display: flex;
+            align-items: center;
+            color: #999;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .paso.activo {
+            color: #667eea;
+        }
+
+        .paso.completado {
+            color: #66bb6a;
+        }
+
+        .numero-paso {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        .paso.activo .numero-paso {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+        }
+
+        .paso.completado .numero-paso {
+            background: #66bb6a;
+        }
+
+        .paso::after {
+            content: '→';
+            margin: 0 20px;
+            color: #ccc;
+        }
+
+        .paso:last-child::after {
+            display: none;
+        }
+
+        .formulario-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .formulario-principal {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .seccion-titulo {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-label.required::after {
+            content: ' *';
+            color: #f5576c;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-input.error {
+            border-color: #f5576c;
+            background: #fff5f5;
+        }
+
+        .error-message {
+            color: #f5576c;
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            background: #fafafa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .medios-pago {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .medio-pago {
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            background: #fafafa;
+            position: relative;
+        }
+
+        .medio-pago:hover {
+            border-color: #667eea;
+            background: white;
+        }
+
+        .medio-pago.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea15, #764ba215);
+        }
+
+        .medio-pago input[type="radio"] {
+            display: none;
+        }
+
+        .medio-pago-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .medio-pago-nombre {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .resumen-compra {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .producto-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #f0f0f0;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            background: #fafafa;
+        }
+
+        .producto-imagen {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            color: white;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .producto-info {
+            flex: 1;
+        }
+
+        .producto-nombre {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .producto-cantidad {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .producto-precio {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        .resumen-totales {
+            border-top: 2px solid #f0f0f0;
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+
+        .total-linea {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .total-final {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #667eea;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+
+        .botones-accion {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-volver {
+            flex: 1;
+            padding: 15px 25px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-volver:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-completar {
+            flex: 2;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #66bb6a, #4caf50);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-completar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-completar:hover::before {
+            left: 100%;
+        }
+
+        .btn-completar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 187, 106, 0.4);
+        }
+
+        .btn-completar:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .seguridad-info {
+            background: linear-gradient(135deg, #66bb6a15, #4caf5015);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            border-left: 4px solid #66bb6a;
+        }
+
+        .seguridad-info h4 {
+            color: #66bb6a;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .seguridad-lista {
+            list-style: none;
+            color: #666;
+        }
+
+        .seguridad-lista li {
+            margin-bottom: 5px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .seguridad-lista li::before {
+            content: '🔒';
+            position: absolute;
+            left: 0;
+        }
+
+        @media (max-width: 768px) {
+            .formulario-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .medios-pago {
+                grid-template-columns: 1fr;
+            }
+
+            .proceso-pasos {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .paso::after {
+                content: '↓';
+                margin: 10px 0;
+            }
+
+            .botones-accion {
+                flex-direction: column;
+            }
+
+            .resumen-compra {
+                position: relative;
+            }
+        }
+
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f0f0f0;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Completar Compra</h1>
+            <p>Estás a un paso de obtener tus productos artesanales únicos</p>
+        </div>
+
+        <nav class="breadcrumb">
+            <a href="#" onclick="goBack()">Catálogo</a> / 
+            <a href="#" onclick="goToCart()">Carrito</a> / 
+            <span>Completar Compra</span>
+        </nav>
+
+        <div class="proceso-pasos">
+            <div class="paso completado">
+                <div class="numero-paso">1</div>
+                <span>Carrito</span>
+            </div>
+            <div class="paso activo">
+                <div class="numero-paso">2</div>
+                <span>Datos de Compra</span>
+            </div>
+            <div class="paso">
+                <div class="numero-paso">3</div>
+                <span>Confirmación</span>
+            </div>
+        </div>
+
+        <div class="formulario-container">
+            <div class="formulario-principal">
+                <form id="formularioCompra" novalidate>
+                    <!-- Datos del Cliente -->
+                    <div class="seccion">
+                        <h2 class="seccion-titulo">
+                            👤 Datos del Cliente
+                        </h2>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label required" for="nombre">Nombre Completo</label>
+                                <input type="text" class="form-input" id="nombre" name="nombre" required>
+                                <div class="error-message" id="error-nombre">Por favor ingresa tu nombre completo</div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required" for="telefono">Teléfono</label>
+                                <input type="tel" class="form-input" id="telefono" name="telefono" placeholder="+54 11 1234-5678" required>
+                                <div class="error-message" id="error-telefono">Por favor ingresa un teléfono válido</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label required" for="email">Correo Electrónico</label>
+                            <input type="email" class="form-input" id="email" name="email" placeholder="tu@email.com" required>
+                            <div class="error-message" id="error-email">Por favor ingresa un email válido</div>
+                        </div>
+                    </div>
+
+                    <!-- Dirección de Entrega -->
+                    <div class="seccion">
+                        <h2 class="seccion-titulo">
+                            📍 Dirección de Entrega
+                        </h2>
+                        
+                        <div class="form-group">
+                            <label class="form-label required" for="direccion">Dirección Completa</label>
+                            <input type="text" class="form-input" id="direccion" name="direccion" placeholder="Calle, Número, Piso/Depto" required>
+                            <div class="error-message" id="error-direccion">Por favor ingresa tu dirección completa</div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label required" for="ciudad">Ciudad</label>
+                                <input type="text" class="form-input" id="ciudad" name="ciudad" value="Buenos Aires" required>
+                                <div class="error-message" id="error-ciudad">Por favor ingresa tu ciudad</div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required" for="codigoPostal">Código Postal</label>
+                                <input type="text" class="form-input" id="codigoPostal" name="codigoPostal" placeholder="C1000" required>
+                                <div class="error-message" id="error-codigoPostal">Por favor ingresa tu código postal</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="referencia">Referencias Adicionales</label>
+                            <input type="text" class="form-input" id="referencia" name="referencia" placeholder="Entre qué calles, puntos de referencia, etc.">
+                        </div>
+                    </div>
+
+                    <!-- Medio de Pago -->
+                    <div class="seccion">
+                        <h2 class="seccion-titulo">
+                            💳 Medio de Pago
+                        </h2>
+                        
+                        <div class="medios-pago">
+                            <label class="medio-pago" for="efectivo">
+                                <input type="radio" id="efectivo" name="medioPago" value="efectivo" required>
+                                <div class="medio-pago-icon">💵</div>
+                                <div class="medio-pago-nombre">Efectivo</div>
+                            </label>
+
+                            <label class="medio-pago" for="transferencia">
+                                <input type="radio" id="transferencia" name="medioPago" value="transferencia" required>
+                                <div class="medio-pago-icon">🏦</div>
+                                <div class="medio-pago-nombre">Transferencia</div>
+                            </label>
+
+                            <label class="medio-pago" for="mercadopago">
+                                <input type="radio" id="mercadopago" name="medioPago" value="mercadopago" required>
+                                <div class="medio-pago-icon">💙</div>
+                                <div class="medio-pago-nombre">MercadoPago</div>
+                            </label>
+
+                            <label class="medio-pago" for="tarjeta">
+                                <input type="radio" id="tarjeta" name="medioPago" value="tarjeta" required>
+                                <div class="medio-pago-icon">💳</div>
+                                <div class="medio-pago-nombre">Tarjeta</div>
+                            </label>
+                        </div>
+                        <div class="error-message" id="error-medioPago">Por favor selecciona un medio de pago</div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Resumen de Compra -->
+            <div class="resumen-compra">
+                <h2 class="seccion-titulo">
+                    🛒 Resumen de Compra
+                </h2>
+
+                <div id="listadoProductos">
+                    <!-- Los productos se cargarán aquí -->
+                </div>
+
+                <div class="resumen-totales">
+                    <div class="total-linea">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">$0</span>
+                    </div>
+                    <div class="total-linea">
+                        <span>Envío:</span>
+                        <span id="envio">Gratis</span>
+                    </div>
+                    <div class="total-linea">
+                        <span>Descuentos:</span>
+                        <span id="descuentos">-$0</span>
+                    </div>
+                    <div class="total-linea total-final">
+                        <span>Total:</span>
+                        <span id="total">$0</span>
+                    </div>
+                </div>
+
+                <div class="seguridad-info">
+                    <h4>🛡️ Compra Segura</h4>
+                    <ul class="seguridad-lista">
+                        <li>Datos protegidos con SSL</li>
+                        <li>Garantía de devolución</li>
+                        <li>Productos artesanales únicos</li>
+                        <li>Soporte post-venta</li>
+                    </ul>
+                </div>
+
+                <div class="botones-accion">
+                    <a href="#" class="btn-volver" onclick="goBack()">← Volver</a>
+                    <button type="submit" class="btn-completar" form="formularioCompra">
+                        Completar Compra 🚀
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading overlay -->
+    <div class="loading" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <h3>Procesando tu compra...</h3>
+            <p>Por favor espera un momento</p>
+        </div>
+    </div>
+
+    <script>
+        // Datos de ejemplo del carrito
+        const carritoProductos = [
+            {
+                id: 1,
+                nombre: "Cartera Artesanal Rosa",
+                categoria: "carteras",
+                precio: 2500,
+                cantidad: 1,
+                descuento: 500
+            },
+            {
+                id: 2,
+                nombre: "Bolso Vintage Azul",
+                categoria: "bolsos",
+                precio: 3200,
+                cantidad: 2,
+                descuento: 0
+            },
+            {
+                id: 3,
+                nombre: "Bordado Floral Exclusivo",
+                categoria: "bordados",
+                precio: 1800,
+                cantidad: 1,
+                descuento: 0
+            }
+        ];
+
+        // Iconos por categoría
+        const iconosCategorias = {
+            carteras: '👜',
+            bolsos: '🎒',
+            bordados: '🧵'
+        };
+
+        // Cargar productos en el resumen
+        function cargarProductos() {
+            const container = document.getElementById('listadoProductos');
+            let subtotal = 0;
+            let totalDescuentos = 0;
+
+            container.innerHTML = carritoProductos.map(producto => {
+                const totalProducto = producto.precio * producto.cantidad;
+                subtotal += totalProducto;
+                totalDescuentos += producto.descuento * producto.cantidad;
+
+                return `
+                    <div class="producto-item">
+                        <div class="producto-imagen">
+                            ${iconosCategorias[producto.categoria]}
+                        </div>
+                        <div class="producto-info">
+                            <div class="producto-nombre">${producto.nombre}</div>
+                            <div class="producto-cantidad">Cantidad: ${producto.cantidad}</div>
+                        </div>
+                        <div class="producto-precio">$${totalProducto.toLocaleString()}</div>
+                    </div>
+                `;
+            }).join('');
+
+            // Actualizar totales
+            const costoEnvio = subtotal >= 10000 ? 0 : 1500;
+            const total = subtotal + costoEnvio - totalDescuentos;
+
+            document.getElementById('subtotal').textContent = `$${subtotal.toLocaleString()}`;
+            document.getElementById('envio').textContent = costoEnvio === 0 ? 'Gratis' : `$${costoEnvio.toLocaleString()}`;
+            document.getElementById('descuentos').textContent = `-$${totalDescuentos.toLocaleString()}`;
+            document.getElementById('total').textContent = `$${total.toLocaleString()}`;
+        }
+
+        // Validación de campos
+        function validarCampo(campo) {
+            const valor = campo.value.trim();
+            const nombre = campo.name;
+            let esValido = true;
+            let mensaje = '';
+
+            switch(nombre) {
+                case 'nombre':
+                    esValido = valor.length >= 2;
+                    mensaje = 'El nombre debe tener al menos 2 caracteres';
+                    break;
+                case 'telefono':
+                    esValido = /^[\+]?[0-9\s\-\(\)]{10,}$/.test(valor);
+                    mensaje = 'Por favor ingresa un teléfono válido';
+                    break;
+                case 'email':
+                    esValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor);
+                    mensaje = 'Por favor ingresa un email válido';
+                    break;
+                case 'direccion':
+                    esValido = valor.length >= 5;
+                    mensaje = 'La dirección debe ser más específica';
+                    break;
+                case 'ciudad':
+                    esValido = valor.length >= 2;
+                    mensaje = 'Por favor ingresa una ciudad válida';
+                    break;
+                case 'codigoPostal':
+                    esValido = /^[A-Z0-9]{4,10}$/.test(valor.toUpperCase());
+                    mensaje = 'Por favor ingresa un código postal válido';
+                    break;
+            }
+
+            const errorElement = document.getElementById(`error-${nombre}`);
+            if (esValido) {
+                campo.classList.remove('error');
+                errorElement.style.display = 'none';
+            } else {
+                campo.classList.add('error');
+                errorElement.textContent = mensaje;
+                errorElement.style.display = 'block';
+            }
+
+            return esValido;
+        }
+
+        // Validación en tiempo real
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.addEventListener('blur', () => validarCampo(input));
+            input.addEventListener('input', () => {
+                if (input.classList.contains('error')) {
+                    validarCampo(input);
+                }
+            });
+        });
+
+        // Manejo de medios de pago
+        document.querySelectorAll('input[name="medioPago"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.querySelectorAll('.medio-pago').forEach(medio => {
+                    medio.classList.remove('selected');
+                });
+                this.parentElement.classList.add('selected');
+                document.getElementById('error-medioPago').style.display = 'none';
+            });
+        });
+
+        // Envío del formulario
+        document.getElementById('formularioCompra').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let formularioValido = true;
+            
+            // Validar todos los campos requeridos
+            const camposRequeridos = this.querySelectorAll('input[required]');
+            camposRequeridos.forEach(campo => {
+                if (campo.type === 'radio') {
+                    const grupoRadio = this.querySelectorAll(`input[name="${campo.name}"]`);
+                    const algunoSeleccionado = Array.from(grupoRadio).some(radio => radio.checked);
+                    if (!algunoSeleccionado) {
+                        document.getElementById('error-medioPago').style.display = 'block';
+                        formularioValido = false;
+                    }
+                } else {
+                    if (!validarCampo(campo)) {
+                        formularioValido = false;
+                    }
+                }
+            });
+
+            if (formularioValido) {
+                procesarCompra();
+            } else {
+                alert('Por favor completa todos los campos requeridos correctamente.');
+            }
+        });
+
+        // Procesar compra
+        function procesarCompra() {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            loadingOverlay.style.display = 'flex';
+
+            // Simular procesamiento
+            setTimeout(() => {
+                loadingOverlay.style.display = 'none';
+                
+                // Obtener datos del formulario
+                const formData = new FormData(document.getElementById('formularioCompra'));
+                const datosCompra = Object.fromEntries(formData.entries());
+                
+                // Agregar productos al objeto de datos
+                datosCompra.productos = carritoProductos;
+                
+                console.log('Datos de la compra:', datosCompra);
+                
+                alert('¡Compra procesada exitosamente! Te enviaremos la confirmación por email.');
+                
+                // Aquí enviarías los datos al servidor
+                // Por ejemplo: enviarDatosAlServidor(datosCompra);
+                
+            }, 3000);
+        }
+
+        // Funciones de navegación
+        function goBack() {
+            alert('Volviendo al carrito...');
+            // window.history.back();
+        }
+
+        function goToCart() {
+            alert('Navegando al carrito...');
+        }
+
+        // Inicializar página
+        document.addEventListener('DOMContentLoaded', function() {
+            cargarProductos();
+            
+            // Auto-rellenar algunos campos para demo
+            document.getElementById('ciudad').value = 'Buenos Aires';
+        });
+    </script>
+</body>
+</html>
